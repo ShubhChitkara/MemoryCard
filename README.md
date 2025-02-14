@@ -13,3 +13,5 @@ Currently, two official plugins are available:
 //function that displays cards in random order when the component mounts
 //fetch card data from external API using useEffect
 //ek hi component bana sakte hai card ka 
+//ek function shuffle karega
+//ek function api fetch karega
