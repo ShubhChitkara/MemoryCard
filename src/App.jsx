@@ -2,27 +2,32 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import Card from "./components/card";
 
-
-
 function App() {
-  const [currentList, setCurrentList] = useState([]);
+  const [currentListOfPokemon, setCurrentListOfPokemon] = useState([]);
   const [currentGame, setCurrentGame] = useState(42);
-  const [guessed, setGuessed] = useState([]);
-  const [highscore, setHighscore] = useState(0);
+  const [alreadyChosenCards, setAlreadyChosenCards] = useState([]);
+  const [highScore, setHighScore] = useState(0);
 
-  const score = guessed.length;
+  const score = alreadyChosenCards.length;
 
   useEffect(() => {
-    setCurrentList([]);
-    fetch(`https://narutodb.xyz/api/character?page=${currentGame}&limit=12`)
+    setCurrentListOfPokemon([]);
+    fetch(`https://pokeapi.co/api/v2/pokemon/`)
       .then((res) => res.json())
       .then((data) => {
-        setCurrentList(data.characters);
+        setCurrentListOfPokemon(data);
+        console.log(currentListOfPokemon)
+        data.results.map(element => {
+          
+          console.log(element.name)
+          
+        });
+        
       });
   }, [currentGame]);
 
   function shuffle() {
-    const array = [...currentList];
+    const array = [...currentListOfPokemon];
     let currentIndex = array.length;
     while (currentIndex != 0) {
       let randomIndex = Math.floor(Math.random() * currentIndex);
@@ -37,49 +42,43 @@ function App() {
   }
 
   function handleClick(id) {
-    if (guessed.includes(id)) {
-      setHighscore(Math.max(score, highscore));
-      setGuessed([]);
+    if (alreadyChosenCards.includes(id)) {
+      setHighScore(Math.max(score, highScore));
+      setAlreadyChosenCards([]);
       const newGame = Math.random() * (119 - 1) + 1;
       setCurrentGame(newGame);
       alert("You lost!");
     } else {
-      if (score === 11) {
+      if (score === 20) {
         alert("You won!");
-        setHighscore(12);
-        setGuessed([]);
+        setHighScore(20);
+        setAlreadyChosenCards([]);
       }
-      setGuessed([...guessed, id]);
+      setAlreadyChosenCards([...alreadyChosenCards, id]);
       shuffle();
     }
   }
   return (
     <>
-      {currentList.length === 0 ? (
-        <Spinner />
-      ) : (
-        <>
-          <div className="heading">
-            <h1 className="title">Naruto Memory Game</h1>
-            <div className="stats">
-              <h1>score: {score}</h1>
-              <h1>highscore: {highscore}</h1>
-            </div>
-          </div>
-          <div className="container">
-            {currentList.map((item) => {
-              return (
-                <Card
-                  key={item.id}
-                  image={item.images[0]}
-                  title={item.name}
-                  onClick={() => handleClick(item.id)}
-                />
-              );
-            })}
-          </div>
-        </>
-      )}
+      <div className="heading">
+        <h1 className="title">Naruto Memory Game</h1>
+        <div className="stats">
+          <h1>score: {score}</h1>
+          <h1>highscore: {highScore}</h1>
+        </div>
+      </div>
+      <div className="container">
+        {currentListOfPokemon[0].map((item) => {
+          return (
+            <Card
+              key={item.name}
+              image={item.url}
+              title={item.name}
+              onClick={() => handleClick(item.name)}
+            />
+          );
+        })}
+      </div>
     </>
   );
 }
