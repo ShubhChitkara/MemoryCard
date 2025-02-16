@@ -15,3 +15,25 @@ Currently, two official plugins are available:
 //ek hi component bana sakte hai card ka 
 //ek function shuffle karega
 //ek function api fetch karega
+function App() {
+  const [currentScore, setCurrentScore] = useState(0);
+  const [bestScore, setBestScore] = useState(0);
+
+  async function getData(data) {
+    const response = await fetch(
+      `https://api.giphy.com/v1/gifs/translate?api_key=VWv6VBmqxOs1j6J9LgDTNEV8fCoEX4mp&s=${data}`,
+      { mode: "cors" }
+    );
+    response.json().then(function (response) {
+      console.log(response.data.images.original.url);
+    });
+  }
+
+  return (
+    <>
+      
+    </>
+  )
+}
+
+export default App

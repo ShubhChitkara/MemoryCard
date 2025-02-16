@@ -1,0 +1,16 @@
+.card {
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.8s;
+  }
+  
+  .card:hover {
+    background-color: #0b0b0b;
+    transform: scale(1.05);
+    cursor: pointer;
+  }
